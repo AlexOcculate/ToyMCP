@@ -99,10 +99,9 @@ def parse_response(raw):
         # Line 63:  Deserialize the response; raise if malformed.
         data = json.loads(raw) if isinstance(raw, str) else raw
     except (json.JSONDecodeError, TypeError):
-        # Line 65:  If we can't parse it, return a synthetic error so caller handles gracefully.
-        return {
-            "error": {"code": PARSE_ERROR, "message": "Response is not valid JSON."}
-        }
+        # Line 65:  FIX: Return error object directly (same shape as valid JSON-RPC errors).
+        #          Previously returned {"error": {...}} which broke the "code" in parsed check.
+        return {"code": PARSE_ERROR, "message": "Response is not valid JSON."}
 
     # Line 68:  Check if the response contains an error field (JSON-RPC: either result OR error).
     if "error" in data:

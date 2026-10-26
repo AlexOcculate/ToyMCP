@@ -221,7 +221,11 @@ def test_module_specific():
 #  RUNNER
 # ──────────────────────────────────────────────
 if __name__ == "__main__":
-    # Line 148:  Define the list of tests to run (name + function).
+    # Line 148:  Define ANSI codes for pass/fail badges (green bg + white fg / red bg + white fg).
+    GREEN_BG = "\033[42;37m"  # Line 149:  Green background, white foreground for PASS.
+    RED_BG = "\033[41;37m"  # Line 150:  Red background, white foreground for FAIL.
+    RESET = "\033[0m"  # Line 151:  Reset terminal to default colors after badge.
+    # Line 152:  Define the list of tests to run (name + function).
     tests = [
         ("Broken LM / Chaotic output", test_broken_lm),
         ("Hostile / Invalid input", test_hostile_input),
@@ -229,24 +233,24 @@ if __name__ == "__main__":
         ("Infinite loop / Max iterations", test_infinite_loop),
         ("Malformed JSON-RPC response", test_module_specific),
     ]
-    # Line 154:  Track how many tests pass.
+    # Line 158:  Track how many tests pass.
     passed = 0
-    # Line 155:  Iterate through all tests and run them.
+    # Line 159:  Iterate through all tests and run them.
     for name, fn in tests:
-        # Line 156:  Wrap each test in try/except to catch any unexpected failures.
+        # Line 160:  Wrap each test in try/except to catch any unexpected failures.
         try:
-            # Line 157:  Execute the test function.
+            # Line 161:  Execute the test function.
             fn()
-            # Line 158:  Print PASS with the test name.
-            print(f"  PASS  {name}")
-            # Line 159:  Increment passed counter.
+            # Line 162:  Print PASS with green background + white foreground badge.
+            print(f"  {GREEN_BG}PASS{RESET}  {name}")
+            # Line 163:  Increment passed counter.
             passed += 1
         except Exception as e:
-            # Line 161:  Print FAIL with the exception details.
-            print(f"  FAIL  {name}: {e}")
-    # Line 163:  Print summary line.
+            # Line 165:  Print FAIL with red background + white foreground badge.
+            print(f"  {RED_BG}FAIL{RESET}  {name}: {e}")
+    # Line 167:  Print summary line.
     print(f"\n  {passed}/{len(tests)} tests passed.")
-    # Line 164:  If any test failed, exit with non-zero code (for CI integration).
+    # Line 168:  If any test failed, exit with non-zero code (for CI integration).
     if passed < len(tests):
-        # Line 165:  Exit with status 1 to signal failure.
+        # Line 169:  Exit with status 1 to signal failure.
         sys.exit(1)

@@ -20,7 +20,7 @@ from Harness.loop import AgentLoop
 from Harness.guardrails import Guardrails
 
 # Line 10: Import memory for key-value state persistence.
-from harness.memory import Memory
+from Harness.memory import Memory
 
 
 # Line 13:  Define a tool function: add two numbers together.
